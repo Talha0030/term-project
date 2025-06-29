@@ -1,0 +1,38 @@
+name: Development Workflow
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  build-deploy-dev:
+    runs-on: ubuntu-latest
+    environment: development-env
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint HTML
+        run: npm run lint:html
+
+      - name: Lint CSS
+        run: npm run lint:css
+
+      - name: Build website
+        run: npm run build
+
+      - name: Deploy to GitHub Pages (Dev)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          destination_dir: dev
