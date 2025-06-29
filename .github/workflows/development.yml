@@ -16,18 +16,20 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: '18'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
       - name: Lint HTML
-        run: npm run lint:html
+        run: |
+          npx htmlhint "**/*.html"
 
       - name: Lint CSS
-        run: npm run lint:css
+        run: |
+          npx stylelint "**/*.css"
 
-      - name: Build website
+      - name: Build Website
         run: npm run build
 
       - name: Deploy to GitHub Pages (Dev)
@@ -35,4 +37,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-          destination_dir: dev
+          cname: dev.yourdomain.com  # Optional - remove this line if not using a custom domain
